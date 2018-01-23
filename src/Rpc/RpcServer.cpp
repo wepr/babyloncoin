@@ -557,7 +557,6 @@ bool RpcServer::f_on_blocks_list_json(const F_COMMAND_RPC_GET_BLOCKS_LIST::reque
     m_core.getBlockDifficulty(static_cast<uint32_t>(i), blockDiff);
 
     f_block_short_response block_short;
-    block_short.cumul_size = blokBlobSize + tx_cumulative_block_size - minerTxBlobSize;
     block_short.timestamp = blk.timestamp;
     block_short.height = i;
     block_short.hash = Common::podToHex(block_hash);
