@@ -654,6 +654,7 @@ simple_wallet::simple_wallet(System::Dispatcher& dispatcher, const CryptoNote::C
   m_consoleHandler.setHandler("save", boost::bind(&simple_wallet::save, this, _1), "Save wallet synchronized data");
   m_consoleHandler.setHandler("reset", boost::bind(&simple_wallet::reset, this, _1), "Discard cache data and start synchronizing from the start");
   m_consoleHandler.setHandler("show_seed", boost::bind(&simple_wallet::seed, this, _1), "Get wallet recovery phrase (deterministic seed)");
+  m_consoleHandler.setHandler("payment_id", boost::bind(&simple_wallet::payment_id, this, _1), "Generate random Payment ID");
   m_consoleHandler.setHandler("help", boost::bind(&simple_wallet::help, this, _1), "Show this help");
   m_consoleHandler.setHandler("exit", boost::bind(&simple_wallet::exit, this, _1), "Close wallet");
 }
@@ -682,6 +683,13 @@ bool simple_wallet::set_log(const std::vector<std::string> &args)
 
 	m_logManager.setMaxLevel(static_cast<Logging::Level>(l));
 	return true;
+}
+
+//----------------------------------------------------------------------------------------------------
+
+bool simple_wallet::payment_id(const std::vector<std::string> &args) {
+  success_msg_writer() << "Payment ID: " << Crypto::rand<Crypto::Hash>();
+  return true;
 }
 
 //----------------------------------------------------------------------------------------------------
@@ -1667,7 +1675,8 @@ bool simple_wallet::export_tracking_key(const std::vector<std::string>& args/* =
 //---------------------------------------------------------------------------------------------------- 
 bool simple_wallet::show_balance(const std::vector<std::string>& args/* = std::vector<std::string>()*/) {
   success_msg_writer() << "available balance: " << m_currency.formatAmount(m_wallet->actualBalance()) <<
-    ", locked amount: " << m_currency.formatAmount(m_wallet->pendingBalance());
+    ", locked amount: " << m_currency.formatAmount(m_wallet->pendingBalance()) <<
+	", total balance: " << m_currency.formatAmount(m_wallet->actualBalance() + m_wallet->pendingBalance());
 
   return true;
 }

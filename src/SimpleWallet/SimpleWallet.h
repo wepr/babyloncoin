@@ -93,7 +93,7 @@ namespace CryptoNote
     bool run_console_handler();
 
     bool new_wallet(const std::string &wallet_file, const std::string& password);
-    bool new_wallet(Crypto::SecretKey &secret_key, Crypto::SecretKey &view_key, const std::string &wallet_file, const std::string& password);
+	bool new_wallet(Crypto::SecretKey &secret_key, Crypto::SecretKey &view_key, const std::string &wallet_file, const std::string& password);
 	bool gen_wallet(const std::string &wallet_file, const std::string& password, const Crypto::SecretKey& recovery_key = Crypto::SecretKey(), bool recover = false, bool two_random = false);
     bool new_wallet(AccountKeys &private_key, const std::string &wallet_file, const std::string& password);
     bool new_tracking_wallet(AccountKeys &tracking_key, const std::string &wallet_file, const std::string& password);
@@ -117,6 +117,7 @@ namespace CryptoNote
     bool save(const std::vector<std::string> &args);
     bool reset(const std::vector<std::string> &args);
     bool set_log(const std::vector<std::string> &args);
+	bool payment_id(const std::vector<std::string> &args);
 	bool change_password();
 	std::string get_password();
 #ifndef __ANDROID__
