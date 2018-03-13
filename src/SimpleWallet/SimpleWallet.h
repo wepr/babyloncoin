@@ -119,8 +119,8 @@ namespace CryptoNote
     bool reset(const std::vector<std::string> &args);
     bool set_log(const std::vector<std::string> &args);
 	bool payment_id(const std::vector<std::string> &args);
-	bool change_password();
-	std::string get_password();
+	bool change_password(const std::vector<std::string> &args);
+
 #ifndef __ANDROID__
 	std::string resolveAlias(const std::string& aliasUrl);
 	bool fetch_dns_txt(const std::string domain, std::string &record);
@@ -193,12 +193,9 @@ namespace CryptoNote
     std::string m_import_path;
     std::string m_daemon_address;
     std::string m_daemon_host;
-    uint16_t m_daemon_port;
-    std::string m_change_password;
 	std::string m_mnemonic_seed;
-
     std::string m_wallet_file;
-
+	uint16_t m_daemon_port;
 	Crypto::SecretKey m_recovery_key;  // recovery key (used as random for wallet gen)
 	bool m_restore_deterministic_wallet;  // recover flag
 	bool m_non_deterministic;  // old 2-random generation
