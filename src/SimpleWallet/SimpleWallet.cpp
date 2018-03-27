@@ -1716,17 +1716,13 @@ bool simple_wallet::show_outgoing_transfers(const std::vector<std::string>& args
     if (txInfo.totalAmount > 0) continue;
     hasTransfers = true;
     logger(INFO) << "        amount       \t                              tx id";
-    logger(INFO, BRIGHT_MAGENTA) << std::setw(21) << m_currency.formatAmount(txInfo.totalAmount) << '\t' << Common::podToHex(txInfo.hash);
+	logger(INFO, BRIGHT_MAGENTA) << std::setw(TOTAL_AMOUNT_MAX_WIDTH) << m_currency.formatAmount(txInfo.totalAmount) << '\t' << Common::podToHex(txInfo.hash);
 
-    for (size_t tr = 0; tr < m_wallet->getTransferCount(); ++tr) {
-      WalletLegacyTransfer transfer;
-      WalletLegacyTransaction tx;
-      m_wallet->getTransaction(m_wallet->findTransactionByTransferId(tr), tx);
-      if (tx.hash == txInfo.hash) {
-        m_wallet->getTransfer(tr, transfer);
-        logger(INFO, MAGENTA) << std::setw(21) << m_currency.formatAmount(-transfer.amount) << '\t' << transfer.address;
-      }
-    }
+	for (TransferId id = txInfo.firstTransferId; id < txInfo.firstTransferId + txInfo.transferCount; ++id) {
+		WalletLegacyTransfer tr;
+		m_wallet->getTransfer(id, tr);
+		logger(INFO, MAGENTA) << std::setw(TOTAL_AMOUNT_MAX_WIDTH) << m_currency.formatAmount(-tr.amount) << '\t' << tr.address;
+	}
   }
 
   if (!hasTransfers) success_msg_writer() << "No outgoing transfers";
