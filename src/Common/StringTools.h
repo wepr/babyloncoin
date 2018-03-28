@@ -18,6 +18,9 @@
 
 #pragma once
 
+#include <string>
+#include <algorithm>
+#include <cstring>
 #include <cstdint>
 #include <sstream>
 #include <stdexcept>
@@ -28,6 +31,16 @@ namespace Common {
 std::string asString(const void* data, size_t size); // Does not throw
 std::string asString(const std::vector<uint8_t>& data); // Does not throw
 std::vector<uint8_t> asBinaryArray(const std::string& data);
+
+struct iequal
+{
+	bool operator()(int c1, int c2) const
+	{
+		return ::toupper(c1) == ::toupper(c2);
+	}
+};
+
+bool iequals(const std::string& str1, const std::string& str2);
 
 uint8_t fromHex(char character); // Returns value of hex 'character', throws on error
 bool fromHex(char character, uint8_t& value); // Assigns value of hex 'character' to 'value', returns false on error, does not throw
