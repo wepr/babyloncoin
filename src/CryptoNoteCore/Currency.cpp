@@ -547,7 +547,7 @@ namespace CryptoNote {
 		// To get an average solvetime to within +/- ~0.1%, use an adjustment factor.
 		const double_t adjust = 0.998;
 		// The divisor k normalizes it to an LWMA average.
-		const double_t k = n * (n + 1) / 2;
+		const double_t k = (n - 1) * n / 2;
 
 		double_t LWMA(0);
 		int64_t solveTime(0);
