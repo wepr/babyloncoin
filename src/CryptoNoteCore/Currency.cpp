@@ -528,6 +528,8 @@ namespace CryptoNote {
 		// Karbowanec, Masari, Bitcoin Gold, and Bitcoin Cash have contributed.
 		// See https://github.com/zawy12/difficulty-algorithms/issues/1 for other algos.
 		// Do not use "if solvetime < 0 then solvetime = 1" which allows a catastrophic exploit.
+		// T= target_solvetime;
+		// N = int(45 * (600 / T) ^ 0.3));
 
 		int64_t T = static_cast<int64_t>(m_difficultyTarget);
 		size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
@@ -557,7 +559,7 @@ namespace CryptoNote {
 			solveTime = std::min<int64_t>((T * 7), std::max<int64_t>(solveTime, (-6 * T)));
 			LWMA += solveTime * i / k;
 			diff = cumulativeDifficulties[i] - cumulativeDifficulties[i - 1];
-			harmonicMeanDiff += diff / (n - 1);
+			harmonicMeanDiff += static_cast<uint64_t>(diff / (n - 1));
 		}
 
 		// Keep LWMA reasonable in case a coin does not have appropriate limits on
