@@ -511,8 +511,8 @@ namespace CryptoNote {
 		uint64_t nextDiffZ = low / timeSpan;
 
 		// minimum limit
-		if (nextDiffZ < 1) {
-			nextDiffZ = 1;
+		if (nextDiffZ < 100000) {
+			nextDiffZ = 100000;
 		}
 
 		return nextDiffZ;
@@ -529,16 +529,16 @@ namespace CryptoNote {
 		// *current* difficulty by taking a kind of "slope" into account. A simple average is just
 		// an estimate of the correct difficulty as it was N / 2 blocks in the past.
 
-		int64_t T = static_cast<int64_t>(m_difficultyTarget);
-		size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
+		const int64_t T = static_cast<int64_t>(m_difficultyTarget);
+		const size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3 - 1;
 
-		if (timestamps.size() > N) {
-			timestamps.resize(N);
-			cumulativeDifficulties.resize(N);
+		if (timestamps.size() > N + 1) {
+			timestamps.resize(N + 1);
+			cumulativeDifficulties.resize(N + 1);
 		}
 		size_t length = timestamps.size();
 		assert(length == cumulativeDifficulties.size());
-		assert(length <= N);
+		assert(length <= CryptoNote::parameters::DIFFICULTY_WINDOW_V3);
 		if (length <= 1)
 			return 1;
 
@@ -546,12 +546,12 @@ namespace CryptoNote {
 		const double_t adjust = pow(0.9989, 500 / N);
 		const uint64_t k = static_cast<uint64_t>((N + 1) / 2 * adjust * T);
 
-		int64_t t = 0, j = 0; // weighted solve times
+		int64_t t = 0; // weighted solve times
 		int64_t solveTime(0);
 
-		for (int64_t i = 1; i <= length; i++) { // off-by-one if not <= instead of <
-			solveTime = static_cast<int64_t>(timestamps[i]) - static_cast<int64_t>(timestamps[i - 1]);		
-			//solveTime = std::min<int64_t>((T * 6), std::max<int64_t>(solveTime, (-5 * T)));
+		for (int64_t i = 1; i < length; i++) { // off-by-one if not <= instead of <
+			solveTime = static_cast<int64_t>(timestamps[i]) - static_cast<int64_t>(timestamps[i - 1]);
+			solveTime = std::min<int64_t>((T * 6), std::max<int64_t>(solveTime, (-5 * T)));
 			t += solveTime * i;
 		}
 
