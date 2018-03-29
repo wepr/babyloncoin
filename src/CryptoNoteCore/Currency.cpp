@@ -511,8 +511,8 @@ namespace CryptoNote {
 		uint64_t nextDiffZ = low / timeSpan;
 
 		// minimum limit
-		if (nextDiffZ < 1) {
-			nextDiffZ = 1;
+		if (nextDiffZ < 100000) {
+			nextDiffZ = 100000;
 		}
 
 		return nextDiffZ;
@@ -549,7 +549,7 @@ namespace CryptoNote {
 		// The divisor k normalizes LWMA.
 		const double_t k = N * (N + 1) / 2;
 
-		double_t LWMA(0), sum_inverse_D(0), harmonic_mean_D(0);
+		double_t LWMA(0), sum_inverse_D(0), harmonic_mean_D(0), nextDifficulty(0);
 		int64_t solveTime(0);
 		uint64_t difficulty(0), next_difficulty(0);
 
@@ -567,15 +567,13 @@ namespace CryptoNote {
 			LWMA = static_cast<double_t>(T / 20);
 
 		harmonic_mean_D = N / sum_inverse_D * adjust;
+		nextDifficulty = harmonic_mean_D * T / LWMA;
+		next_difficulty = static_cast<uint64_t>(nextDifficulty);
 		
-		uint64_t low, high;
-		low = mul128(static_cast<uint64_t>(harmonic_mean_D), T, &high);
-		if (high != 0) {
-			return 0;
+		// minimum limit
+		if (next_difficulty < 100000) {
+			next_difficulty = 100000;
 		}
-
-		//next_difficulty = static_cast<uint64_t>(harmonic_mean_D * T / LWMA);
-		next_difficulty = low / static_cast<int64_t>(std::round(LWMA));
 
 		return next_difficulty;
 	}
