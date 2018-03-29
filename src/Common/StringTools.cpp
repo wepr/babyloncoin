@@ -45,11 +45,6 @@ const uint8_t characterValues[256] = {
 
 }
 
-bool iequals(const std::string& str1, const std::string& str2)
-{
-	return std::equal(str1.begin(), str1.end(), str2.begin(), iequal());
-}
-
 std::string asString(const void* data, size_t size) {
   return std::string(static_cast<const char*>(data), size);
 }

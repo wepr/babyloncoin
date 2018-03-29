@@ -29,7 +29,6 @@
 #include "Common/StringTools.h"
 #include <Common/Base58.h>
 #include "Common/Util.h"
-//#include <boost/algorithm/string/predicate.hpp>
 
 using namespace Logging;
 using namespace CryptoNote;
@@ -364,8 +363,9 @@ bool wallet_rpc_server::on_get_transaction(const wallet_rpc::COMMAND_RPC_GET_TRA
 			|| txInfo.state == WalletLegacyTransactionState::Failed)
 			continue;
 
-		//if (boost::iequals(Common::podToHex(txInfo.hash), req.tx_hash))
-		if (Common::iequals(Common::podToHex(txInfo.hash), req.tx_hash))
+		Crypto::Hash req_hash;
+		Common::podFromHex(req.tx_hash, req_hash);
+		if (req_hash == txInfo.hash)
 		{
 			std::string address = "";
 			if (txInfo.totalAmount < 0 && txInfo.transferCount > 0)
