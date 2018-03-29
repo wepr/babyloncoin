@@ -549,7 +549,7 @@ namespace CryptoNote {
 		int64_t t = 0; // weighted solve times
 		int64_t solveTime(0);
 
-		for (int64_t i = 1; i < length; i++) { // off-by-one if not <= instead of <
+		for (int64_t i = 1; i < length; i++) {
 			solveTime = static_cast<int64_t>(timestamps[i]) - static_cast<int64_t>(timestamps[i - 1]);
 			solveTime = std::min<int64_t>((T * 6), std::max<int64_t>(solveTime, (-5 * T)));
 			t += solveTime * i;
@@ -560,7 +560,6 @@ namespace CryptoNote {
 			t = N * (N + 1) / 2 * T / 4;
 
 		difficulty_type totalWork = cumulativeDifficulties.back() - cumulativeDifficulties.front();
-		difficulty_type previousDifficulty = cumulativeDifficulties.back() - cumulativeDifficulties.end()[-2];
 		assert(totalWork > 0);
 
 		uint64_t low, high, nextDifficulty;
@@ -571,7 +570,8 @@ namespace CryptoNote {
 		nextDifficulty = low / t;
 
 		// A symmetric 15 % limit on how fast it rises or falls
-		nextDifficulty = static_cast<uint64_t>(std::max<uint64_t>(previousDifficulty * 0.85, std::min<uint64_t>(nextDifficulty, previousDifficulty / 0.85)));
+		// difficulty_type previousDifficulty = cumulativeDifficulties.back() - cumulativeDifficulties.end()[-2];
+		// nextDifficulty = static_cast<uint64_t>(std::max<uint64_t>(previousDifficulty * 0.85, std::min<uint64_t>(nextDifficulty, previousDifficulty / 0.85)));
 
 		return nextDifficulty;
 	}
