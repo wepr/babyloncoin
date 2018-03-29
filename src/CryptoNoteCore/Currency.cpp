@@ -549,34 +549,33 @@ namespace CryptoNote {
 		// The divisor k normalizes LWMA.
 		const double_t k = N * (N + 1) / 2;
 
-		double_t weightedSolveTimes(0), sum_inverse_D(0);
-		int64_t LWMA(0), solveTime(0);
-		uint64_t harmonic_mean_D(0), next_difficulty(0);
+		double_t LWMA(0), sum_inverse_D(0), harmonic_mean_D(0);
+		int64_t solveTime(0);
+		uint64_t difficulty(0), next_difficulty(0);
 
 		// Loop through N most recent blocks.
 		for (int64_t i = 1; i <= N; i++) {
 			solveTime = static_cast<int64_t>(timestamps[i]) - static_cast<int64_t>(timestamps[i - 1]);
 			solveTime = std::min<int64_t>((T * 7), std::max<int64_t>(solveTime, (-6 * T)));
-			weightedSolveTimes += solveTime * i / k;
-			sum_inverse_D += 1 / static_cast<double_t>(cumulativeDifficulties[i] - cumulativeDifficulties[i - 1]);
+			difficulty = cumulativeDifficulties[i] - cumulativeDifficulties[i - 1];
+			LWMA += solveTime * i / k;
+			sum_inverse_D += 1 / static_cast<double_t>(difficulty);
 		}
 
-		LWMA = static_cast<int64_t>(std::round(weightedSolveTimes));
-
 		// Keep LWMA sane in case something unforeseen occurs.
-		if (LWMA < T / 20)
-			LWMA = T / 20;
+		if (static_cast<int64_t>(std::round(LWMA)) < T / 20)
+			LWMA = static_cast<double_t>(T / 20);
 
-		harmonic_mean_D = static_cast<uint64_t>(N / sum_inverse_D * adjust); // adjusted
-		//next_difficulty = static_cast<uint64_t>(harmonic_mean_D * T / weightedSolveTimes);
-
+		harmonic_mean_D = N / sum_inverse_D * adjust;
+		
 		uint64_t low, high;
 		low = mul128(static_cast<uint64_t>(harmonic_mean_D), T, &high);
 		if (high != 0) {
 			return 0;
 		}
 
-		next_difficulty = low / LWMA;
+		//next_difficulty = static_cast<uint64_t>(harmonic_mean_D * T / LWMA);
+		next_difficulty = low / static_cast<int64_t>(std::round(LWMA));
 
 		return next_difficulty;
 	}
