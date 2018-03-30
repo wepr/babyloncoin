@@ -54,7 +54,7 @@ const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(0);
 
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
-const size_t   DIFFICULTY_WINDOW_V2                          = 17; // blocks
+const size_t   DIFFICULTY_WINDOW_V2                          = 17;  // blocks
 const size_t   DIFFICULTY_WINDOW_V3                          = 60 + 1; // blocks (add one to compensate off-by-one in difficulty calculation)
 const size_t   DIFFICULTY_CUT                                = 60;  // timestamps to cut after sorting
 const size_t   DIFFICULTY_LAG                                = 15;  // !!!
@@ -76,7 +76,7 @@ const size_t   FUSION_TX_MIN_INPUT_COUNT                     = 12;
 const size_t   FUSION_TX_MIN_IN_OUT_COUNT_RATIO              = 4;
 
 const uint32_t UPGRADE_HEIGHT_V2                             = 60000;
-const uint32_t UPGRADE_HEIGHT_V3                             = 4294967294;
+const uint32_t UPGRADE_HEIGHT_V3                             = 216000;
 const unsigned UPGRADE_VOTING_THRESHOLD                      = 90; // percent
 const uint32_t UPGRADE_VOTING_WINDOW                         = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
 const uint32_t UPGRADE_WINDOW                                = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY;  // blocks
@@ -157,7 +157,9 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
   {106700,	"678abbf293d1dae9eac831d5fc877a4f53bc98bb86c37e2e5c139af936fb2e1e" },
   {180660,	"6c921a5d3770fa798b038ae26ffd5d9b47ebd733dff4585df7f1632a2101f5a8" },
   {187600,	"f00c6e4b0f9630b52729976f10e532899517333d2ecba22318f820f4512eca69" },
-  {200000,	"afdec3ea5af4f22299d4f0889af3cf27f1c9e20bee2d354d6a74400f61b3694d" }
+  {200000,	"afdec3ea5af4f22299d4f0889af3cf27f1c9e20bee2d354d6a74400f61b3694d" },
+  {213934,	"191f89f771c17ba13b4b6f9950cb013a6608dd8591abfbc67fdbf0197ab7b8da" },
+  {214860,	"6084a42b411bcef34a66b48eea9af2f6cdfc12be548a7c423bf2ea927a23b0cf" }
 };
 
 } // CryptoNote
