@@ -271,6 +271,8 @@ bool core::check_tx_fee(const Transaction& tx, size_t blobSize, tx_verification_
 		tvc.m_tx_fee_too_small = true;
 		return false;
 	}
+
+	return true;
 }
 
 bool core::check_tx_semantic(const Transaction& tx, bool keeped_by_block) {
