@@ -20,6 +20,7 @@
 #include "Currency.h"
 #include <cctype>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/math/special_functions/round.hpp>
 #include <boost/lexical_cast.hpp>
 #include "../Common/Base58.h"
 #include "../Common/int-util.h"
@@ -563,7 +564,7 @@ namespace CryptoNote {
 		}
 
 		// Keep LWMA sane in case something unforeseen occurs.
-		if (static_cast<int64_t>(std::round(LWMA)) < T / 20)
+		if (static_cast<int64_t>(boost::math::round(LWMA)) < T / 20)
 			LWMA = static_cast<double_t>(T / 20);
 
 		harmonic_mean_D = N / sum_inverse_D * adjust;

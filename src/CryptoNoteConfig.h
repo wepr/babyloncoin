@@ -49,9 +49,9 @@ const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_V1  = 100000;
 const size_t   CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE;
 const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 12;
-const uint64_t MINIMUM_FEE                                   = UINT64_C(100000000);
+const uint64_t MINIMUM_FEE                                   = UINT64_C(100000000000);
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(0);
-const uint64_t MAX_TX_MIXIN_SIZE                             = 50;
+const uint64_t MAX_TX_MIXIN_SIZE                             = 20;
 
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
@@ -161,7 +161,8 @@ const std::initializer_list<CheckpointData> CHECKPOINTS = {
   {200000,	"afdec3ea5af4f22299d4f0889af3cf27f1c9e20bee2d354d6a74400f61b3694d" },
   {213934,	"191f89f771c17ba13b4b6f9950cb013a6608dd8591abfbc67fdbf0197ab7b8da" },
   {214860,	"6084a42b411bcef34a66b48eea9af2f6cdfc12be548a7c423bf2ea927a23b0cf" },
-  {216245,	"3af4f447f9f6d9cdf89794f1393708843c8dc14164c809d5233f1546fec3b338" }
+  {216245,	"3af4f447f9f6d9cdf89794f1393708843c8dc14164c809d5233f1546fec3b338" },
+  {216335,	"5d685f8de16a15dbc44b87b4523028e84d4f739519e217874759249d0b5c5ea2" }
 };
 
 } // CryptoNote
