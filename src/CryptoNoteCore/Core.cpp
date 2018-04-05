@@ -40,6 +40,8 @@ using namespace Logging;
 
 using namespace  Common;
 
+#define BLOCK_HEIGHT_TX_MIN_FEE_MAX_MIXIN_VERIFICATION 216394
+
 namespace CryptoNote {
 
 class BlockWithTransactions : public IBlock {
@@ -1053,7 +1055,8 @@ bool core::handleIncomingTransaction(const Transaction& tx, const Crypto::Hash& 
   }
 
   // is in checkpoint zone
-  if (!m_blockchain.isInCheckpointZone(get_current_blockchain_height())) {
+  //if (!m_blockchain.isInCheckpointZone(get_current_blockchain_height())) {
+  if (get_current_blockchain_height() > BLOCK_HEIGHT_TX_MIN_FEE_MAX_MIXIN_VERIFICATION) {
 	  if (!check_tx_fee(tx, blobSize, tvc)) {
 		  tvc.m_verifivation_failed = true;
 		  return false;
