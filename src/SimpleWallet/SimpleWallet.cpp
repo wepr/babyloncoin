@@ -2221,13 +2221,19 @@ int main(int argc, char* argv[]) {
       return 1;
     }
 
+    std::string wallet_password;
     if (!command_line::has_arg(vm, arg_password)) {
-      logger(ERROR, BRIGHT_RED) << "Wallet password not set.";
-      return 1;
-    }
+      //logger(ERROR, BRIGHT_RED) << "Wallet password not set.";
+      //return 1;
+      if (pwd_container.read_password()) {
+		  wallet_password = pwd_container.password();
+      }
+	}
+	else {
+		wallet_password = command_line::get_arg(vm, arg_password);
+	}
 
     std::string wallet_file = command_line::get_arg(vm, arg_wallet_file);
-    std::string wallet_password = command_line::get_arg(vm, arg_password);
     std::string daemon_address = command_line::get_arg(vm, arg_daemon_address);
     std::string daemon_host = command_line::get_arg(vm, arg_daemon_host);
     uint16_t daemon_port = command_line::get_arg(vm, arg_daemon_port);
