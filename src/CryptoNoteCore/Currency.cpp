@@ -533,7 +533,7 @@ namespace CryptoNote {
 		// N = int(45 * (600 / T) ^ 0.3));
 
 		const int64_t T = static_cast<int64_t>(m_difficultyTarget);
-		const size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3 - 1;
+		const size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
 
 		if (timestamps.size() > N + 1) {
 			timestamps.resize(N + 1);
@@ -541,7 +541,7 @@ namespace CryptoNote {
 		}
 		size_t n = timestamps.size();
 		assert(n == cumulativeDifficulties.size());
-		assert(n <= CryptoNote::parameters::DIFFICULTY_WINDOW_V3);
+		assert(n <= CryptoNote::parameters::DIFFICULTY_WINDOW_V3 + 1);
 		if (n <= 1)
 			return 1;
 
