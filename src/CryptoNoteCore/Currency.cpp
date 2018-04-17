@@ -412,7 +412,10 @@ namespace CryptoNote {
 
 	difficulty_type Currency::nextDifficulty(uint8_t blockMajorVersion, std::vector<uint64_t> timestamps,
 		std::vector<difficulty_type> cumulativeDifficulties) const {
-		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_3) {
+		if (blockMajorVersion >= BLOCK_MAJOR_VERSION_4) {
+			return nextDifficultyV4(timestamps, cumulativeDifficulties);
+		}
+		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_3) {
 			return nextDifficultyV3(timestamps, cumulativeDifficulties);
 		}
 		else if (blockMajorVersion == BLOCK_MAJOR_VERSION_2) {
@@ -580,6 +583,62 @@ namespace CryptoNote {
 		}
 
 		return next_difficulty;
+	}
+
+	difficulty_type Currency::nextDifficultyV4(std::vector<uint64_t> timestamps,
+		std::vector<difficulty_type> cumulativeDifficulties) const {
+
+		// LWMA difficulty algorithm (simplified)
+		// Copyright (c) 2017-2018 Zawy
+		// MIT license http://www.opensource.org/licenses/mit-license.php
+		// set constants:  
+		// N is most recent solved block. 
+		// T= target solvetime, adjust = 0.9989^(500/N),  N=int((45*(600/T)^(0.3*(600/T)^0.2)
+		// timestamp, cumulativedifficulties, and target are vectors of size N+1
+
+		const int64_t T = static_cast<int64_t>(m_difficultyTarget);
+		size_t N = CryptoNote::parameters::DIFFICULTY_WINDOW_V3;
+		const double_t adjust = pow(0.9989, 500 / N);
+		const double_t k = T * (N + 1) * adjust;
+
+		if (timestamps.size() < 4) {
+			return 1;
+		}
+		// use a smaller N if timestamps and difficulies vectors are less than N+1
+		if (timestamps.size() < N + 1) {
+			N = timestamps.size() - 1;
+		}
+		if (timestamps.size() > N + 1) {
+			timestamps.resize(N + 1);
+		}
+		if (cumulativeDifficulties.size() > N + 1) {
+			cumulativeDifficulties.resize(N + 1);
+		}
+
+		int64_t L(0);
+		uint64_t next_D;
+		
+		for (int64_t i = 1; i <= N; i++) {
+			L += std::max<int64_t>(-7 * T, std::min<int64_t>(7 * T, timestamps[i] - timestamps[i - 1])) * i;
+		}
+		if (L < 1)
+			L = 1;
+		
+		uint64_t low, high;
+		low = mul128(cumulativeDifficulties[N] - cumulativeDifficulties[0], static_cast<uint64_t>(k), &high);
+		// blockchain error "Difficulty overhead" if this function returns zero
+		if (high != 0) {
+			return 0;
+		}
+
+		next_D = low / L / 2;
+		
+		// minimum limit
+		if (next_D < 100000) {
+			next_D = 100000;
+		}
+
+		return next_D;
 	}
 
 	bool Currency::checkProofOfWorkV1(Crypto::cn_context& context, const Block& block, difficulty_type currentDiffic,
