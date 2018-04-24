@@ -32,7 +32,6 @@ const size_t   CRYPTONOTE_MAX_TX_SIZE                        = 1000000000;
 const uint64_t CRYPTONOTE_PUBLIC_ADDRESS_BASE58_PREFIX       = 111; // addresses start with "K"
 const size_t   CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW          = 10;
 const uint64_t CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT            = DIFFICULTY_TARGET * 7;
-
 const size_t   BLOCKCHAIN_TIMESTAMP_CHECK_WINDOW             = 60;
 
 // MONEY_SUPPLY - total number coins to be generated
@@ -51,7 +50,9 @@ const size_t   CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE        = 600;
 const size_t   CRYPTONOTE_DISPLAY_DECIMAL_POINT              = 12;
 const uint64_t MINIMUM_FEE                                   = UINT64_C(100000000000);
 const uint64_t DEFAULT_DUST_THRESHOLD                        = UINT64_C(100000000);
+const uint64_t MIN_TX_MIXIN_SIZE                             = 2;
 const uint64_t MAX_TX_MIXIN_SIZE                             = 20;
+const uint64_t MAX_TRANSACTION_SIZE_LIMIT                    = CRYPTONOTE_BLOCK_GRANTED_FULL_REWARD_ZONE_CURRENT / 4 - CRYPTONOTE_COINBASE_BLOB_RESERVED_SIZE;
 
 const uint64_t EXPECTED_NUMBER_OF_BLOCKS_PER_DAY             = 24 * 60 * 60 / DIFFICULTY_TARGET;
 const size_t   DIFFICULTY_WINDOW                             = EXPECTED_NUMBER_OF_BLOCKS_PER_DAY; // blocks
