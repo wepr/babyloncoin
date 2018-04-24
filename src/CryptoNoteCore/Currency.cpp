@@ -568,7 +568,7 @@ namespace CryptoNote {
 
 		// Keep LWMA sane in case something unforeseen occurs.
 		if (static_cast<int64_t>(boost::math::round(LWMA)) < T / 20)
-			LWMA = static_cast<double>(T / 20);
+			LWMA = static_cast<double>(T) / 20;
 
 		harmonic_mean_D = N / sum_inverse_D * adjust;
 		nextDifficulty = harmonic_mean_D * T / LWMA;
